@@ -1,0 +1,108 @@
+{
+  "name": "interpreter-01-app",
+  "displayName": "01 Light",
+  "expo": {
+    "name": "01 Light",
+    "slug": "interpreter-01-app",
+    "scheme": "com.interpreter",
+    "owner": "open-interpreter",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/app-icon.png",
+    "splash": {
+      "image": "./assets/images/splash-logo-all.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "jsEngine": "hermes",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.interpreter.app",
+      "versionCode": 0,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/app-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "splash": {
+        "image": "./assets/images/splash-logo-all.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#000000"
+      }
+    },
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "0",
+      "bundleIdentifier": "com.interpreter.app",
+      "splash": {
+        "image": "./assets/images/splash-logo-all.png",
+        "tabletImage": "./assets/images/splash-logo-all.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#000000"
+      }, 
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "This app requires microphone access to enable voice chatting with the AI agent. Your privacy is important to us, and microphone access is only used when explicitly initiated by you.", 
+        "NSCameraUsageDescription": "This app requires camera access to scan QR codes for connecting to local servers and for potential future features like image analysis or video calls. Your privacy is important to us, and camera access is only used when explicitly initiated by you."
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/app-icon.png",
+      "splash": {
+        "image": "./assets/images/splash-logo-all.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#000000"
+      },
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-localization",
+      "@livekit/react-native-expo-plugin",
+      "@config-plugins/react-native-webrtc",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "newArchEnabled": false
+          },
+          "android": {
+            "newArchEnabled": false
+          }
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "This app requires camera access to scan QR codes for connecting to local servers and for potential future features like image analysis or video calls. Your privacy is important to us, and camera access is only used when explicitly initiated by you.", 
+          "microphonePermission": "This app requires microphone access to enable voice chatting with the AI agent. Your privacy is important to us, and microphone access is only used when explicitly initiated by you.", 
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "../app/assets/fonts/PP_Editorial_New_Regular.otf", 
+            "../app/assets/fonts/PP_Editorial_New_Ultralight.otf",
+            "../app/assets/fonts/PP_Editorial_New_Ultrabold.otf",
+            "../app/assets/fonts/Inter-Bold.otf",
+            "../app/assets/fonts/Inter-SemiBold.otf",
+            "../app/assets/fonts/Inter-Light.otf",
+            "../app/assets/fonts/Inter-Thin.otf",
+            "../app/assets/fonts/Inter-Regular.otf",
+            "../app/assets/fonts/Inter-Medium.otf"
+          ]
+        }
+      ]
+    ],
+    "experiments": {
+      "tsconfigPaths": true
+    }
+  },
+  "ignite": {
+    "version": "9.7.2"
+  }
+}
