@@ -19,7 +19,7 @@ Control your computer and smart home with voice commands from anywhere. The 01 L
 
 <br>
 
-The app is available for download from the Apple App Store and [Google Play Store](https://play.google.com/store/apps/details?id=com.interpreter.app). 
+The app is available for download from the [Apple App Store](https://apps.apple.com/ca/app/01-light/id6601937732) and [Google Play Store](https://play.google.com/store/apps/details?id=com.interpreter.app). 
 
 <br>
 
