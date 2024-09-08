@@ -9,7 +9,7 @@ Whether you're interested in developing new features, improving existing ones, o
 The following guidelines will help you get started with contributing to 01-Light. While these aren't strict rules, we encourage you to use your best judgment. If you have ideas for improving this document or any questions about contributing, don't hesitate to reach out. You can propose changes through a pull request or join our [Discord](https://discord.gg/Hvz9Axh84z) community for more discussion and support.
 
 ## Code of Conduct
-This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT). By participating, you are expected to uphold this code. Please report unacceptable behavior to help@openinterpreter.com.
+This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to help@openinterpreter.com.
 
 # Contribution Guidelines
 
