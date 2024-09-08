@@ -43,6 +43,9 @@ This repository uses a boilerplate from [Infinite Red](https://infinite.red) wit
 <br>
 
 # Start Cooking
+
+**Note on Contributions:** We plan to open for contributions in the near future after we've got the necessary processes in place. Please check back for updates on our contribution guidelines! Thanks for your support and interest in the project.
+
 **Install dependencies**
 ```
 cd app
@@ -156,7 +159,5 @@ This directory will hold your Jest configs and mocks.
 ## License
 
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). You can read the full license text [here](LICENSE).
-
-**Note on Contributions:** We plan to open for contributions in the near future after we've got the necessary processes in place. Please check back for updates on our contribution guidelines! Thanks for your support and interest in the project.
 
 Copyright 2024 Open Interpreter, Inc.
