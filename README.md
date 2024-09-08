@@ -1,5 +1,7 @@
 # 01 Light
 
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+
 ### The AI assistant for computer control.
 Control your computer and smart home with voice commands from anywhere. The 01 Light connects to a server on your home machine, enabling remote access to your files, apps, and IoT devices.
 
