@@ -1,0 +1,25 @@
+appId: com.interpreter.app
+---
+- launchApp:
+    appId: com.interpreter.app
+- openLink: ${EXPO_SERVER}
+
+- extendedWaitUntil:
+    visible: 
+        id: "tosDisclaimer"
+    timeout: 5000
+
+# Verify that all options selected enables the continue button
+- tapOn: 
+    id: "backupRadio"
+- tapOn: 
+    id: "safetyRadio"
+- tapOn: 
+    id: "tosRadio"
+- assertVisible: 
+    id: "tosContinue"
+    enabled: true
+- tapOn: 
+    id: "tosContinue"
+- assertVisible:
+    id: "loginBackground"

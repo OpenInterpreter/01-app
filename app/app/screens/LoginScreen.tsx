@@ -6,7 +6,7 @@
 import { observer } from "mobx-react-lite"
 import React, { FC, useCallback } from "react"
 import {
-  //  Alert,
+  Alert,
   ViewStyle,
   Image,
   ImageStyle,
@@ -16,14 +16,14 @@ import {
 import {
   Screen,
   Text,
-  //  Button,
-  //  TextField
+  Button,
+  TextField
 } from "../components"
 import { typography } from "../theme"
 import { AppStackScreenProps } from "../navigators"
 import { openLinkInBrowser } from "../utils/openLinkInBrowser"
-// import { SafeAreaView } from "react-native-safe-area-context"
-// import { useStores } from "../models"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { useStores } from "../models"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
@@ -32,7 +32,6 @@ const connectSplash = require("../../assets/images/connect.png")
 export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_props) {
   const { navigation } = _props
 
-  /**
   const { connectionStore } = useStores();
   
   const handleTextChange = useCallback((input: string) => {
@@ -63,40 +62,41 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
       />
     );
   }
-  */
 
   const handleScan = useCallback(async () => {
     navigation.navigate("Scan")
   }, [navigation])
 
   return (
-    // wrap in a SafeAreaView for development instead of empty block
     <>
-      {/** 
-      <TextField
-        RightAccessory={localConnect}
-        onChangeText={handleTextChange}
-        value={connectionStore.livekitUrl}
-        placeholder="Your LiveKit URL"
-      />
-      */}
-
-      <Screen
-        preset="auto"
-        contentContainerStyle={$screenContentContainer}
-        safeAreaEdges={["top", "bottom"]}
-      >
-        <TouchableOpacity style={$fullScreenTouchable} onPress={handleScan}>
-          <Image source={connectSplash} style={$connectSplashImage} resizeMode="contain" />
-          <Text
-            tx="loginScreen.setup"
-            style={$setupGuideText}
-            onPress={() =>
-              openLinkInBrowser("https://01.openinterpreter.com/software/installation")
-            }
-          />
-        </TouchableOpacity>
-      </Screen>
+      {__DEV__ ? (
+          <SafeAreaView>
+            <TextField
+              testID="devInput"
+              RightAccessory={localConnect}
+              onChangeText={handleTextChange}
+              value={connectionStore.livekitUrl}
+              placeholder="Your LiveKit URL"
+            />
+          </SafeAreaView> 
+        ) : (
+          <Screen
+            preset="auto"
+            contentContainerStyle={$screenContentContainer}
+            safeAreaEdges={["top", "bottom"]}
+          >
+            <TouchableOpacity style={$fullScreenTouchable} onPress={handleScan}>
+              <Image testID="loginBackground" source={connectSplash} style={$connectSplashImage} resizeMode="contain" />
+              <Text
+                testID="setupLink"
+                tx="loginScreen.setup"
+                style={$setupGuideText}
+                onPress={() => openLinkInBrowser("https://01.openinterpreter.com/software/installation") }
+              />
+            </TouchableOpacity>
+          </Screen>
+        )
+      }
     </>
   )
 })
