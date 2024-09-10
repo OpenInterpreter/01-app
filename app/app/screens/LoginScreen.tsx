@@ -51,17 +51,6 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
     navigation.navigate("Room");
   }, [navigation]);
   
-  
-  const localConnect = () => {
-    return (
-      <Button
-        testID="next-screen-button"
-        preset="reversed"
-        tx="common.connect"
-        onPress={handleLocalConnect}
-      />
-    );
-  }
 
   const handleScan = useCallback(async () => {
     navigation.navigate("Scan")
@@ -70,13 +59,20 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   return (
     <>
       {__DEV__ ? (
-          <SafeAreaView>
+          <SafeAreaView
+            style={$safeContainer}
+          >
             <TextField
-              testID="devInput"
-              RightAccessory={localConnect}
               onChangeText={handleTextChange}
-              value={connectionStore.livekitUrl}
+              style={$devInput}
+              // value={connectionStore.livekitUrl}
               placeholder="Your LiveKit URL"
+            />
+            <Button
+              testID="loginButton"
+              preset="reversed"
+              tx="common.connect"
+              onPress={handleLocalConnect}
             />
           </SafeAreaView> 
         ) : (
@@ -107,6 +103,17 @@ const $fullScreenTouchable: ViewStyle = {
   height: "100%",
   justifyContent: "center",
   alignItems: "center",
+}
+
+const $safeContainer: ViewStyle = {
+  flex: 1,
+  justifyContent: "center",
+  width: "100%"
+}
+
+const $devInput: ViewStyle = {
+  width: '100%',
+  marginBottom: 10,
 }
 
 const $screenContentContainer: ViewStyle = {

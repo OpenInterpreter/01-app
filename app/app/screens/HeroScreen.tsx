@@ -265,6 +265,7 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
 
           <Animated.View style={[$animatedContainer, visualizerAnimatedStyle]}>
             <TouchableOpacity
+              testID="audioVisualizer"
               style={$fullSize}
               onPressIn={settingStore.pushToTalk ? unmute : undefined}
               onPressOut={settingStore.pushToTalk ? mute : undefined}

@@ -24,10 +24,21 @@ tags:
 - tapOn: 
     id: "tosContinue"
 
-
-- tapOn: Your LiveKit URL Connect
-- inputText: ${LIVEKIT_URL}
+- tapOn: 
+    point: 50%,48%
+- inputText: ${LIVEKIT_URL.slice(0, 15)}
+- inputText: ${LIVEKIT_URL.slice(15, 30)}
+- inputText: ${LIVEKIT_URL.slice(30, 45)}
+- inputText: ${LIVEKIT_URL.slice(45, 60)}
+- inputText: ${LIVEKIT_URL.slice(60, 75)}
+- inputText: ${LIVEKIT_URL.slice(75, 90)}
+- inputText: ${LIVEKIT_URL.slice(90)}
 - pressKey: Enter
-- tapOn: Connect
+- tapOn: 
+    id: "loginButton"
 
+- extendedWaitUntil:
+    visible: 
+        id: "audioVisualizer"
+    timeout: 5000
 
