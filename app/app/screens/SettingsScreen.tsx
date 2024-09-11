@@ -50,7 +50,7 @@ export const SettingsScreen: FC<ScreenStackScreenProps<"Settings">> = observer(
 
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-        <TouchableOpacity style={$caretContainer} onPress={handleReturn}>
+        <TouchableOpacity testID="returnIcon" style={$caretContainer} onPress={handleReturn}>
           <Icon icon="caretLeft" size={36} color="white" />
         </TouchableOpacity>
 
@@ -114,6 +114,7 @@ export const SettingsScreen: FC<ScreenStackScreenProps<"Settings">> = observer(
             LeftComponent={<Text tx="settingScreen.wearable" preset="default" style={$itemText} />}
             RightComponent={
               <Toggle
+                testID="wearableToggle"
                 containerStyle={$togglePadding}
                 value={settingStore.wearable}
                 onValueChange={handleWearableToggle}

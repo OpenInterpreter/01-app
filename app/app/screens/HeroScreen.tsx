@@ -299,7 +299,7 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
             </Screen>
           </Animated.View>
 
-          <View style={$settingContainer}>
+          <View testID="settingsIcon" style={$settingContainer}>
             <Icon
               icon="cog"
               size={36}

@@ -41,10 +41,15 @@ tags:
         id: "audioVisualizer"
     timeout: 20000
 
-# enter chat message
 - tapOn: 
-    point: "56%,94%"
-- inputText: "What can you do?"
-- pressKey: Enter
+    id: "settingsIcon"
+- assertVisible: "Settings"
+- tapOn:
+    id: "wearableToggle"
+- tapOn:
+    id: "returnIcon"
 
-- assertVisible: "What can you do?"
+- extendedWaitUntil:
+    visible: 
+        id: "audioVisualizer"
+    timeout: 5000
