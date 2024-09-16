@@ -22,6 +22,7 @@ const en = {
 
   loginScreen: {
     setup: "Setup Guide",
+    report: "Report Bugs",
   },
 
   welcomeScreen: {

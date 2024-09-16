@@ -81,16 +81,22 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
             contentContainerStyle={$screenContentContainer}
             safeAreaEdges={["top", "bottom"]}
           >
-            <TouchableOpacity style={$fullScreenTouchable} onPress={handleScan}>
-              <Image testID="loginBackground" source={connectSplash} style={$connectSplashImage} resizeMode="contain" />
-              <Text
-                testID="setupLink"
-                tx="loginScreen.setup"
-                style={$setupGuideText}
-                onPress={() => openLinkInBrowser("https://01.openinterpreter.com/software/installation") }
-              />
-            </TouchableOpacity>
-          </Screen>
+          <TouchableOpacity style={$fullScreenTouchable} onPress={handleScan}>
+            <Image testID="loginBackground" source={connectSplash} style={$connectSplashImage} resizeMode="contain" />
+            <Text
+              testID="setupLink"
+              tx="loginScreen.setup"
+              style={$setupGuideText}
+              onPress={() => openLinkInBrowser("https://01.openinterpreter.com/software/installation") }
+            />
+            <Text
+              testID="reportLink"
+              tx="loginScreen.report"
+              style={$reportText}
+              onPress={() => openLinkInBrowser("https://0ggfznkwh4j.typeform.com/to/fXVezM5w") }
+            />
+          </TouchableOpacity>
+        </Screen>
         )
       }
     </>
@@ -131,7 +137,16 @@ const $setupGuideText: TextStyle = {
   color: "#6a6a6a",
   fontSize: 18,
   position: "absolute",
-  bottom: "36%",
+  bottom: "30%",
   textDecorationLine: "underline",
-  fontFamily: typography.fonts.inter.regular,
+  fontFamily: typography.fonts.inter.medium,
+}
+
+const $reportText: TextStyle = {
+  color: "rgba(256, 256, 256, 0.5)",
+  fontSize: 16,
+  position: "absolute",
+  top: "5%",
+  right: "5%",
+  fontFamily: typography.fonts.inter.medium,
 }
