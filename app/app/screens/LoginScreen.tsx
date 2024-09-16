@@ -87,7 +87,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
               testID="setupLink"
               tx="loginScreen.setup"
               style={$setupGuideText}
-              onPress={() => openLinkInBrowser("https://01.openinterpreter.com/software/installation") }
+              onPress={() => openLinkInBrowser("https://01.openinterpreter.com/client/android-ios#setup") }
             />
             <Text
               testID="reportLink"

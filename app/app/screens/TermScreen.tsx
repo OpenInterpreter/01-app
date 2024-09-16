@@ -46,8 +46,8 @@ export const TermScreen: FC<TermScreenProps> = observer(function TermScreen(_pro
     return settingStore.backup && settingStore.safety && settingStore.terms
   }
 
-  const openTermsAndConditions = () => {
-    openLinkInBrowser("https://01.openinterpreter.com/hardware/mobile/privacy")
+  const openTermsOfService = () => {
+    openLinkInBrowser("https://01.openinterpreter.com/legal/terms-of-service")
   }
 
   return (
@@ -104,7 +104,7 @@ export const TermScreen: FC<TermScreenProps> = observer(function TermScreen(_pro
                       testID="tosTOSLink"
                       tx="termScreen.tos"
                       style={[$radioText, $linkText]}
-                      onPress={openTermsAndConditions}
+                      onPress={openTermsOfService}
                     />
                     <Text text="." style={$radioText} />
                   </Text>
