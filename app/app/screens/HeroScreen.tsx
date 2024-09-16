@@ -17,7 +17,7 @@ import {
   useConnectionState,
 } from "@livekit/react-native"
 import { ConnectionState } from "livekit-client"
-import { useDataChannel, useChat } from "@livekit/components-react"
+import { useChat } from "@livekit/components-react"
 import { useStores } from "../models"
 import { useAudioActivity } from "../utils/useVolume"
 import { AudioVisualizer } from "../components/AudioVisualizer"
@@ -93,30 +93,6 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
 
   const currentVolume =
     (subscribedVolumes.reduce((sum, value) => sum + value, 0) / subscribedVolumes.length) * 50
-
-  const onDataReceived = useCallback((msg: any) => {
-    if (msg.topic === "transcription") {
-      console.log("message received", msg)
-      const decoded = JSON.parse(new TextDecoder("utf-8").decode(msg.payload))
-      let timestamp = new Date().getTime()
-      if ("timestamp" in decoded && decoded.timestamp > 0) {
-        timestamp = decoded.timestamp
-      }
-      setTranscripts((prevTranscripts) => {
-        const newTranscripts = new Map(prevTranscripts)
-        const id = `local-${timestamp}` // Create a unique ID for this transcript
-        newTranscripts.set(id, {
-          name: "You",
-          message: decoded.text,
-          timestamp,
-          isSelf: true,
-        })
-        return newTranscripts
-      })
-    }
-  }, [])
-
-  useDataChannel(onDataReceived)
 
   const filteredMessages = useMemo(() => {
     return messages.filter((message) => !isSpecialMessage(message.message))
