@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  Alert,
 } from "react-native"
 import { Screen, Icon } from "../components"
 import { ScreenStackScreenProps } from "../navigators/ScreenNavigator"
@@ -14,12 +13,10 @@ import { spacing } from "../theme"
 import { TranscriptionTile } from "app/components/Transcript"
 import { ChatMessageInput } from "../components/ChatMessageInput"
 import {
-  TrackReferenceOrPlaceholder,
-  useTracks,
   useLocalParticipant,
   useConnectionState,
 } from "@livekit/react-native"
-import { Track, ConnectionState, RemoteTrack, LocalTrack } from "livekit-client"
+import { ConnectionState } from "livekit-client"
 import { useDataChannel, useChat } from "@livekit/components-react"
 import { useStores } from "../models"
 import { useAudioActivity } from "../utils/useVolume"
@@ -30,6 +27,7 @@ import { toJS } from "mobx"
 import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated"
 import { WelcomeScreenWrapper } from "./WelcomeScreen"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useAudioSetup } from "../utils/useAudioSetup"
 
 const isSpecialMessage = (message: string): boolean => {
   const specialMessages = [
@@ -46,7 +44,6 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
   const isRevealed = useRef(false)
   const { navigation } = _props
 
-  const tracks = useTracks()
   const { localParticipant } = useLocalParticipant()
   const roomState = useConnectionState()
   const { settingStore } = useStores()
@@ -60,13 +57,14 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
   const insets = useSafeAreaInsets()
   const [_, setKeyboardVisible] = useState(false)
   const chatFlexValue = useSharedValue(7)
-  const [audioTrackReady, setAudioTrackReady] = useState(false)
-  const audioTrackRef = useRef<LocalTrack | undefined>(undefined)
-  let agentAudioTrack: TrackReferenceOrPlaceholder | undefined
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode)
-  }
+  const {
+    audioTrackReady,
+    agentAudioTrack,
+    unmute,
+    mute,
+  } = useAudioSetup(localParticipant, roomState, settingStore, navigation, isDarkMode, setIsDarkMode)
+
 
   useEffect(() => {
     if (roomState === ConnectionState.Disconnected || roomState === ConnectionState.Reconnecting) {
@@ -74,49 +72,6 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
     }
   }, [roomState])
 
-  useEffect(() => {
-    if (roomState === ConnectionState.Connected && localParticipant) {
-      const setupMicrophone = async () => {
-        await localParticipant.setMicrophoneEnabled(true)
-        let attempts = 0
-        const maxAttempts = 10
-
-        while (!audioTrackRef.current && attempts < maxAttempts) {
-          audioTrackRef.current = localParticipant.getTrackPublication(
-            Track.Source.Microphone,
-          )?.track
-          if (!audioTrackRef.current) {
-            await new Promise((resolve) => setTimeout(resolve, 500))
-            attempts++
-          }
-        }
-
-        if (audioTrackRef.current) {
-          console.log("Microphone found after", attempts, "attempts")
-          console.log("Setting up microphone:", {
-            pushToTalk: settingStore.pushToTalk,
-            alwaysListening: settingStore.alwaysListening,
-          })
-          if (settingStore.pushToTalk && !settingStore.alwaysListening) {
-            console.log("Muting microphone")
-            await audioTrackRef.current.mute()
-          } else {
-            console.log("Unmuting microphone")
-            await audioTrackRef.current.unmute()
-          }
-          console.log("Microphone muted state:", audioTrackRef.current.isMuted)
-          setAudioTrackReady(true)
-        } else {
-          Alert.alert(`Microphone  track not found after ${maxAttempts} attempts`)
-          navigation.navigate("Login")
-        }
-      }
-
-      ;(async () => {
-        await setupMicrophone()
-      })()
-    }
-  }, [localParticipant, roomState, settingStore.pushToTalk, settingStore.alwaysListening])
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
@@ -134,52 +89,10 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
     }
   }, [])
 
-  const aat = tracks.find(
-    (trackRef) => trackRef.publication.kind === Track.Kind.Audio && trackRef.participant.isAgent,
-  )
-
-  if (aat) {
-    agentAudioTrack = aat
-  }
-
   const subscribedVolumes = useAudioActivity(agentAudioTrack?.publication?.track)
 
   const currentVolume =
     (subscribedVolumes.reduce((sum, value) => sum + value, 0) / subscribedVolumes.length) * 50
-
-  const unmute = () => {
-    if (localParticipant && settingStore.pushToTalk && !settingStore.alwaysListening) {
-      if (audioTrackRef.current) {
-        audioTrackRef.current.unmute()
-      }
-    }
-
-    // Mute the agent track
-    if (agentAudioTrack?.publication?.track) {
-      ;(agentAudioTrack.publication.track as RemoteTrack).setMuted(true)
-    }
-
-    toggleTheme()
-  }
-
-  const mute = () => {
-    if (localParticipant && settingStore.pushToTalk && !settingStore.alwaysListening) {
-      if (audioTrackRef.current) {
-        audioTrackRef.current.mute()
-      }
-    }
-
-    // Unmute the agent track
-    if (agentAudioTrack?.publication?.track) {
-      ;(agentAudioTrack.publication.track as RemoteTrack).setMuted(false)
-    }
-
-    if (settingStore.pushToTalk) {
-      sendChat("{START}")
-    }
-
-    toggleTheme()
-  }
 
   const onDataReceived = useCallback((msg: any) => {
     if (msg.topic === "transcription") {
