@@ -1,4 +1,10 @@
 import { ExpoConfig, ConfigContext } from "@expo/config"
+import { config } from "dotenv";
+
+/**
+ * Initialize dotenv to load environment variables
+ */
+config();
 
 /**
  * Use ts-node here so we can use TypeScript for our Config Plugins
@@ -21,5 +27,11 @@ module.exports = ({ config }: ConfigContext): Partial<ExpoConfig> => {
       ...existingPlugins,
       require("./plugins/withSplashScreen").withSplashScreen,
     ],
+    extra: {
+      ...config.extra,
+      eas: {
+        projectId: process.env.EAS_PROJECT_ID || "", // Dynamically set EAS_PROJECT_ID
+      },
+    },
   }
 }
