@@ -19,7 +19,6 @@ import {
 import { ConnectionState } from "livekit-client"
 import { useChat } from "@livekit/components-react"
 import { useStores } from "../models"
-import { useAudioActivity } from "../utils/useVolume"
 import { AudioVisualizer } from "../components/AudioVisualizer"
 import { ChatMessageType } from "../components/Chat"
 import { observer } from "mobx-react-lite"
@@ -82,11 +81,6 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
     }
   }, [])
 
-  const subscribedVolumes = useAudioActivity(agentAudioTrack?.publication?.track)
-
-  const currentVolume =
-    (subscribedVolumes.reduce((sum, value) => sum + value, 0) / subscribedVolumes.length) * 50
-
   const chatAnimatedStyle = useAnimatedStyle(() => ({
     flex: isWearable ? 0 : chatFlexValue.value,
     display: isWearable ? "none" : "flex",
@@ -148,7 +142,7 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
                 ]}
                 safeAreaEdges={isRevealed.current ? ["top"] : []}
               >
-                <AudioVisualizer currentVolume={currentVolume} darkMode={isDarkMode} />
+                <AudioVisualizer darkMode={isDarkMode} />
               </Screen>
             </TouchableOpacity>
           </Animated.View>
