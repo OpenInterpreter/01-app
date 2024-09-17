@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useCallback, useRef, useMemo } from "react"
+import React, { FC, useEffect, useState, useCallback, useRef } from "react"
 import {
   ViewStyle,
   View,
@@ -28,17 +28,9 @@ import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanima
 import { WelcomeScreenWrapper } from "./WelcomeScreen"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAudioSetup } from "../utils/useAudioSetup"
+import { useTranscriptionHook } from "../utils/useTranscription"
 
-const isSpecialMessage = (message: string): boolean => {
-  const specialMessages = [
-    "{START}",
-    "{CONTEXT_MODE_ON}",
-    "{CONTEXT_MODE_OFF}",
-    "{REQUIRE_START_ON}",
-    "{REQUIRE_START_OFF}",
-  ]
-  return specialMessages.includes(message.trim())
-}
+
 
 export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function HeroScreen(_props) {
   const isRevealed = useRef(false)
@@ -65,6 +57,7 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
     mute,
   } = useAudioSetup(localParticipant, roomState, settingStore, navigation, isDarkMode, setIsDarkMode)
 
+  const { filteredMessages, filteredTranscripts } = useTranscriptionHook(messages, transcripts)
 
   useEffect(() => {
     if (roomState === ConnectionState.Disconnected || roomState === ConnectionState.Reconnecting) {
@@ -93,20 +86,6 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
 
   const currentVolume =
     (subscribedVolumes.reduce((sum, value) => sum + value, 0) / subscribedVolumes.length) * 50
-
-  const filteredMessages = useMemo(() => {
-    return messages.filter((message) => !isSpecialMessage(message.message))
-  }, [messages])
-
-  const filteredTranscripts = useMemo(() => {
-    const newTranscripts = new Map(transcripts)
-    for (const [id, transcript] of newTranscripts) {
-      if (isSpecialMessage(transcript.message)) {
-        newTranscripts.delete(id)
-      }
-    }
-    return newTranscripts
-  }, [transcripts])
 
   const chatAnimatedStyle = useAnimatedStyle(() => ({
     flex: isWearable ? 0 : chatFlexValue.value,
