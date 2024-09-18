@@ -38,6 +38,19 @@ export const SettingsScreen: FC<ScreenStackScreenProps<"Settings">> = observer(
       settingStore.setProp("wearable", newValue)
     }
 
+    const handleAutorunToggle = (newValue: boolean) => {
+      settingStore.setProp("autorun", newValue)
+
+      if (!newValue) {
+        // if push to talk is turned off then turn off always listening
+        console.log("SETTING AUTORUN OFF")
+        settingStore.autorunOff(sendChat)
+      } else {
+        console.log("SETTING AUTORUN ON")
+        settingStore.autorunOn(sendChat)
+      }
+    }
+
     const handleReturn = useCallback(() => {
       navigation.navigate("Hero")
     }, [])
@@ -123,6 +136,21 @@ export const SettingsScreen: FC<ScreenStackScreenProps<"Settings">> = observer(
             }
           />
           <Text tx="settingScreen.wearableDescription" style={$formHelper} />
+
+          <Card
+            style={[$background, $smallContainer]}
+            LeftComponent={<Text tx="settingScreen.autorun" preset="default" style={$itemText} />}
+            RightComponent={
+              <Toggle
+                testID="autorunToggle"
+                containerStyle={$togglePadding}
+                value={settingStore.autorun}
+                onValueChange={handleAutorunToggle}
+                variant="switch"
+              />
+            }
+          />
+          <Text tx="settingScreen.autorunDescription" style={$formHelper} />
 
           <Card
             style={[$background, $footerContainer]}

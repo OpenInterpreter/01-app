@@ -29,7 +29,7 @@ export const ChatMessageInput = ({ placeholder, onSend, isDarkMode }: ChatMessag
     setMessage("")
   }, [onSend, message])
 
-  const showVisionAlert = () => {
+  const showCamera = () => {
     Alert.alert("Vision Support", "coming soon!", [{ text: "OK" }])
   }
 
@@ -40,13 +40,13 @@ export const ChatMessageInput = ({ placeholder, onSend, isDarkMode }: ChatMessag
     <View>
       <View style={$inputContainer}>
         {isDarkMode ? (
-          <TouchableOpacity style={$plusButton} onPress={showVisionAlert}>
+          <TouchableOpacity style={$plusButton} onPress={showCamera}>
             <View style={$plusIconContainer(isDarkMode)}>
               <AntDesign name="plus" size={20} color={"white"} />
             </View>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={$plusButton} onPress={showVisionAlert}>
+          <TouchableOpacity style={$plusButton} onPress={showCamera}>
             <View style={$plusIconContainer(isDarkMode)}>
               <AntDesign name="plus" size={20} color={"white"} />
             </View>

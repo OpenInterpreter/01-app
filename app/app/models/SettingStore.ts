@@ -13,6 +13,7 @@ export const SettingStoreModel = types
     pushToTalk: types.optional(types.boolean, true),
     wearable: types.optional(types.boolean, false),
     alwaysListening: types.optional(types.boolean, false),
+    autorun: types.optional(types.boolean, false),
   })
   .actions(withSetPropAction)
   .actions((self) => ({
@@ -31,6 +32,21 @@ export const SettingStoreModel = types
     },
   }))
   .actions((self) => ({
+    autorunOn(sendChat: (message: string) => void) {
+      if (self.autorun) {
+        sendChat("{AUTORUN_ON}")
+        console.log("AUTORUN ON")
+      }
+    },
+
+    autorunOff(sendChat: (message: string) => void) {
+      if (!self.autorun) {
+        sendChat("{AUTORUN_OFF}")
+        console.log("AUTORUN OFF")
+      }
+    },
+  }))
+  .actions((self) => ({
     reset() {
       self.setProp("backup", false)
       self.setProp("safety", false)
@@ -38,6 +54,7 @@ export const SettingStoreModel = types
       self.setProp("pushToTalk", true)
       self.setProp("wearable", false)
       self.setProp("alwaysListening", false)
+      self.setProp("autorun", false)
     },
   }))
 

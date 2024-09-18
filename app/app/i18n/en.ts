@@ -44,6 +44,9 @@ const en = {
     wearable: "Wearable Mode",
     wearableDescription:
       "Disables chat interface and displays a minimal full-screen button. Optimized for small screens on wearable devices.",
+    autorun: "Autorun Code",
+    autorunDescription:
+      "When this is on, your 01 will automatically run code. Otherwise, you'll need to permit any code that the 01 wants to run.",
     report: "Report Bugs",
     privacyPolicy: "Privacy Policy",
   },
