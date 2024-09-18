@@ -36,6 +36,7 @@ import { ViewStyle } from "react-native"
 import { registerGlobals } from "@livekit/react-native"
 import "./utils/cryptoPolyfill"
 import { initCrashReporting } from "./utils/crashReporting"
+import * as Sentry from "@sentry/react-native"
 
 initCrashReporting()
 registerGlobals()
@@ -56,17 +57,14 @@ const config = {
   },
 }
 
-interface AppProps {
-  hideSplashScreen: () => Promise<boolean>
-}
 
 /**
  * This is the root component of our app.
- * @param {AppProps} props - The props for the `App` component.
+ * @param props - The props for the `App` component.
  * @returns {JSX.Element} The rendered `App` component.
  */
-function App(props: AppProps) {
-  const { hideSplashScreen } = props
+function App(props: Record<string, any>) {
+  const hideSplashScreen = props.hideSplashScreen as () => Promise<boolean>
 
   /**
    * DO NOT CACHE THE LAST SCREEN
@@ -119,7 +117,8 @@ function App(props: AppProps) {
   )
 }
 
-export default App
+const ExportedApp = __DEV__ ? App : Sentry.wrap(App)
+export default ExportedApp
 
 const $container: ViewStyle = {
   flex: 1,
