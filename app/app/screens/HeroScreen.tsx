@@ -12,10 +12,7 @@ import { ScreenStackScreenProps } from "../navigators/ScreenNavigator"
 import { spacing } from "../theme"
 import { TranscriptionTile } from "app/components/Transcript"
 import { ChatMessageInput } from "../components/ChatMessageInput"
-import {
-  useLocalParticipant,
-  useConnectionState,
-} from "@livekit/react-native"
+import { useLocalParticipant, useConnectionState } from "@livekit/react-native"
 import { ConnectionState } from "livekit-client"
 import { useChat } from "@livekit/components-react"
 import { useStores } from "../models"
@@ -28,12 +25,13 @@ import { WelcomeScreenWrapper } from "./WelcomeScreen"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAudioSetup } from "../utils/useAudioSetup"
 import { useTranscriptionHook } from "../utils/useTranscription"
-
-
+import { useTheme } from "../utils/useTheme" // Import the useTheme hook
 
 export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function HeroScreen(_props) {
   const isRevealed = useRef(false)
   const { navigation } = _props
+
+  const { isDarkMode } = useTheme()
 
   const { localParticipant } = useLocalParticipant()
   const roomState = useConnectionState()
@@ -43,18 +41,17 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
   const [messages, setMessages] = useState<ChatMessageType[]>([])
   const [transcripts, setTranscripts] = useState<Map<string, ChatMessageType>>(new Map())
 
-  const [isDarkMode, setIsDarkMode] = useState(true)
   const isWearable = toJS(settingStore.wearable)
   const insets = useSafeAreaInsets()
   const [_, setKeyboardVisible] = useState(false)
   const chatFlexValue = useSharedValue(7)
 
-  const {
-    audioTrackReady,
-    agentAudioTrack,
-    unmute,
-    mute,
-  } = useAudioSetup(localParticipant, roomState, settingStore, navigation, isDarkMode, setIsDarkMode)
+  const { audioTrackReady, agentAudioTrack, unmute, mute } = useAudioSetup(
+    localParticipant,
+    roomState,
+    settingStore,
+    navigation,
+  )
 
   const { filteredMessages, filteredTranscripts } = useTranscriptionHook(messages, transcripts)
 
@@ -63,7 +60,6 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
       console.log("Connection Lost", "You have been disconnected from the room")
     }
   }, [roomState])
-
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
@@ -114,13 +110,11 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
               contentContainerStyle={$topContainer(isDarkMode)}
             >
               <TranscriptionTile
-                agentAudioTrack={agentAudioTrack}
-                accentColor={isDarkMode ? "white" : "black"}
+                agentAudioTrack={agentAudioTrack}      
                 transcripts={filteredTranscripts}
                 setTranscripts={setTranscripts}
                 messages={filteredMessages}
                 setMessages={setMessages}
-                isDarkMode={isDarkMode}
               />
             </Screen>
           </Animated.View>
@@ -142,7 +136,7 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
                 ]}
                 safeAreaEdges={isRevealed.current ? ["top"] : []}
               >
-                <AudioVisualizer darkMode={isDarkMode} />
+                <AudioVisualizer />
               </Screen>
             </TouchableOpacity>
           </Animated.View>

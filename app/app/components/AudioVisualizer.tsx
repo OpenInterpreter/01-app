@@ -1,14 +1,14 @@
 import React from "react"
 import { ViewStyle, View } from "react-native"
+import { useTheme } from "../utils/useTheme"
+import { Theme } from "../theme/Theme"
 
-export const AudioVisualizer = ({
-  darkMode,
-}: {
-  darkMode: boolean
-}) => {
+export const AudioVisualizer = () => {
+  const { theme } = useTheme()
+
   return (
     <View style={$visualizerContainer}>
-      <View style={$agentIcon(darkMode)} />
+      <View style={$agentIcon(theme)} />
     </View>
   )
 }
@@ -20,13 +20,13 @@ const $visualizerContainer: ViewStyle = {
   alignItems: "center",
 }
 
-const $agentIcon = (isDarkMode: boolean): ViewStyle => ({
+const $agentIcon = (theme: Theme): ViewStyle => ({
   height: 110,
   width: 110,
   borderRadius: 55,
   alignItems: "center",
   justifyContent: "center",
-  backgroundColor: isDarkMode ? "white" : "black",
+  backgroundColor: theme.accent,
   zIndex: 3,
   position: "absolute",
 })

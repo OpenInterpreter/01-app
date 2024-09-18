@@ -8,7 +8,7 @@ import {
   ViewProps,
   ViewStyle,
 } from "react-native"
-import { colors, spacing } from "../theme"
+import { themes, spacing } from "../theme"
 import { Text, TextProps } from "./Text"
 
 type Presets = keyof typeof $containerPresets
@@ -247,7 +247,7 @@ const $containerBase: ViewStyle = {
   borderRadius: spacing.sm,
   padding: spacing.xs,
   // borderWidth: 1,
-  // shadowColor: colors.palette.neutral800,
+  // shadowColor: themes.dark.palette.neutral800,
   // shadowOffset: { width: 0, height: 12 },
   // shadowOpacity: 0.08,
   // shadowRadius: 12.81,
@@ -272,28 +272,28 @@ const $containerPresets = {
   default: [
     $containerBase,
     {
-      backgroundColor: colors.palette.neutral100,
-      borderColor: colors.palette.neutral300,
+      backgroundColor: themes.dark.palette.neutral100,
+      borderColor: themes.dark.palette.neutral300,
     },
   ] as StyleProp<ViewStyle>,
 
   reversed: [
     $containerBase,
-    { backgroundColor: colors.palette.neutral800, borderColor: colors.palette.neutral500 },
+    { backgroundColor: themes.dark.palette.neutral800, borderColor: themes.dark.palette.neutral500 },
   ] as StyleProp<ViewStyle>,
 }
 
 const $headingPresets: Record<Presets, TextStyle> = {
   default: {},
-  reversed: { color: colors.palette.neutral100 },
+  reversed: { color: themes.dark.palette.neutral100 },
 }
 
 const $contentPresets: Record<Presets, TextStyle> = {
   default: {},
-  reversed: { color: colors.palette.neutral100 },
+  reversed: { color: themes.dark.palette.neutral100 },
 }
 
 const $footerPresets: Record<Presets, TextStyle> = {
   default: {},
-  reversed: { color: colors.palette.neutral100 },
+  reversed: { color: themes.dark.palette.neutral100 },
 }

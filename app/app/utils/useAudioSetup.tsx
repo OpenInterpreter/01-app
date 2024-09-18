@@ -3,14 +3,13 @@ import { LocalParticipant, ConnectionState, Track, LocalTrack, RemoteTrack } fro
 import { useChat } from "@livekit/components-react"
 import { TrackReferenceOrPlaceholder, useTracks } from "@livekit/react-native"
 import { Alert } from "react-native"
+import { useTheme } from "./useTheme"
 
 export function useAudioSetup(
   localParticipant: LocalParticipant | null,
   roomState: ConnectionState,
   settingStore: any,
   navigation: any,
-  isDarkMode: boolean,
-  setIsDarkMode: (isDarkMode: boolean) => void
 ) {
   const [audioTrackReady, setAudioTrackReady] = useState(false)
   const audioTrackRef = useRef<LocalTrack | undefined>(undefined)
@@ -18,9 +17,7 @@ export function useAudioSetup(
   const { send: sendChat } = useChat()
   let agentAudioTrack: TrackReferenceOrPlaceholder | undefined
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode)
-  }
+  const { toggleTheme } = useTheme()
 
   useEffect(() => {
     if (roomState === ConnectionState.Connected && localParticipant) {
@@ -65,7 +62,6 @@ export function useAudioSetup(
       })()
     }
   }, [localParticipant, roomState, settingStore.pushToTalk, settingStore.alwaysListening])
-
 
   const aat = tracks.find(
     (trackRef) => trackRef.publication.kind === Track.Kind.Audio && trackRef.participant.isAgent,

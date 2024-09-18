@@ -140,9 +140,7 @@ export const SettingsScreen: FC<ScreenStackScreenProps<"Settings">> = observer(
         <Text
           style={$privacyPolicyLink}
           tx="settingScreen.privacyPolicy"
-          onPress={() =>
-            openLinkInBrowser("https://01.openinterpreter.com/legal/privacy-policy")
-          }
+          onPress={() => openLinkInBrowser("https://01.openinterpreter.com/legal/privacy-policy")}
         />
       </Screen>
     )

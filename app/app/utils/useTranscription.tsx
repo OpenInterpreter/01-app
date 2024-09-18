@@ -30,6 +30,5 @@ export function useTranscriptionHook(
     return newTranscripts
   }, [transcripts])
 
-
   return { filteredMessages, filteredTranscripts }
 }

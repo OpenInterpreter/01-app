@@ -20,7 +20,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated"
-import { colors, spacing } from "../theme"
+import { themes, spacing } from "../theme"
 import { iconRegistry, IconTypes } from "./Icon"
 import { Text, TextProps } from "./Text"
 import { isRTL } from "app/i18n"
@@ -200,7 +200,7 @@ export function Toggle(props: ToggleProps) {
   const $inputWrapperStyles = [$inputWrapper, $inputWrapperStyleOverride]
   const $helperStyles = [
     $helper,
-    status === "error" && { color: colors.error },
+    status === "error" && { color: themes.dark.error },
     HelperTextProps?.style,
   ]
 
@@ -275,28 +275,28 @@ function Checkbox(props: ToggleInputProps) {
   } = props
 
   const offBackgroundColor = [
-    disabled && colors.palette.neutral400,
-    status === "error" && colors.errorBackground,
-    colors.palette.neutral200,
+    disabled && themes.dark.palette.neutral400,
+    status === "error" && themes.dark.errorBackground,
+    themes.dark.palette.neutral200,
   ].filter(Boolean)[0]
 
   const outerBorderColor = [
-    disabled && colors.palette.neutral400,
-    status === "error" && colors.error,
-    !on && colors.palette.neutral800,
-    colors.palette.secondary500,
+    disabled && themes.dark.palette.neutral400,
+    status === "error" && themes.dark.error,
+    !on && themes.dark.palette.neutral800,
+    themes.dark.palette.secondary500,
   ].filter(Boolean)[0]
 
   const onBackgroundColor = [
-    disabled && colors.transparent,
-    status === "error" && colors.errorBackground,
-    colors.palette.secondary500,
+    disabled && themes.dark.transparent,
+    status === "error" && themes.dark.errorBackground,
+    themes.dark.palette.secondary500,
   ].filter(Boolean)[0]
 
   const iconTintColor = [
-    disabled && colors.palette.neutral600,
-    status === "error" && colors.error,
-    colors.palette.accent100,
+    disabled && themes.dark.palette.neutral600,
+    status === "error" && themes.dark.error,
+    themes.dark.palette.accent100,
   ].filter(Boolean)[0]
 
   return (
@@ -387,14 +387,14 @@ function Switch(props: ToggleInputProps) {
   )
 
   const offBackgroundColor = [
-    disabled && colors.palette.neutral400,
-    status === "error" && colors.errorBackground,
-    colors.palette.neutral300,
+    disabled && themes.dark.palette.neutral400,
+    status === "error" && themes.dark.errorBackground,
+    themes.dark.palette.neutral300,
   ].filter(Boolean)[0]
 
   const onBackgroundColor = [
-    disabled && colors.transparent,
-    status === "error" && colors.errorBackground,
+    disabled && themes.dark.transparent,
+    status === "error" && themes.dark.errorBackground,
     "#30d158",
   ].filter(Boolean)[0]
 
@@ -402,16 +402,16 @@ function Switch(props: ToggleInputProps) {
     if (on) {
       return [
         $detailStyleOverride?.backgroundColor,
-        status === "error" && colors.error,
-        disabled && colors.palette.neutral600,
-        colors.palette.neutral100,
+        status === "error" && themes.dark.error,
+        disabled && themes.dark.palette.neutral600,
+        themes.dark.palette.neutral100,
       ].filter(Boolean)[0]
     } else {
       return [
         $innerStyleOverride?.backgroundColor,
-        disabled && colors.palette.neutral600,
-        status === "error" && colors.error,
-        colors.palette.neutral200,
+        disabled && themes.dark.palette.neutral600,
+        status === "error" && themes.dark.error,
+        themes.dark.palette.neutral200,
       ].filter(Boolean)[0]
     }
   })()
@@ -495,10 +495,10 @@ function SwitchAccessibilityLabel(props: ToggleInputProps & { role: "on" | "off"
   ]
 
   const color = (function () {
-    if (disabled) return colors.palette.neutral600
-    if (status === "error") return colors.error
-    if (!on) return innerStyle?.backgroundColor || colors.palette.secondary500
-    return detailStyle?.backgroundColor || colors.palette.neutral100
+    if (disabled) return themes.dark.palette.neutral600
+    if (status === "error") return themes.dark.error
+    if (!on) return innerStyle?.backgroundColor || themes.dark.palette.secondary500
+    return detailStyle?.backgroundColor || themes.dark.palette.neutral100
   })()
 
   return (
@@ -543,7 +543,7 @@ function FieldLabel(props: BaseToggleProps) {
 
   const $labelStyle = [
     $label,
-    status === "error" && { color: colors.error },
+    status === "error" && { color: themes.dark.error },
     labelPosition === "right" && $labelRight,
     labelPosition === "left" && $labelLeft,
     $labelStyleOverride,
@@ -614,7 +614,7 @@ const $switchInner: ViewStyle = {
   width: "100%",
   height: "100%",
   alignItems: "center",
-  borderColor: colors.transparent,
+  borderColor: themes.dark.transparent,
   overflow: "hidden",
   position: "absolute",
   paddingStart: 4,

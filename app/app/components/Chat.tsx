@@ -12,12 +12,11 @@ export type ChatMessageType = {
 
 type ChatTileProps = {
   messages: ChatMessageType[]
-  accentColor: string
 }
 
 const windowHeight = Dimensions.get("window").height
 
-export const ChatTile = ({ messages, accentColor }: ChatTileProps) => {
+export const ChatTile = ({ messages }: ChatTileProps) => {
   const scrollViewRef = useRef<ScrollView>(null)
 
   useEffect(() => {
@@ -42,8 +41,6 @@ export const ChatTile = ({ messages, accentColor }: ChatTileProps) => {
               key={index}
               message={message.message}
               isSelf={message.isSelf}
-              accentColor={accentColor}
-              // isConsecutive={isConsecutive}
             />
           )
         })}
