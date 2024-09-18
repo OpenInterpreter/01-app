@@ -23,8 +23,9 @@ import React from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import * as Linking from "expo-linking"
 import { useInitialRootStore } from "./models"
-import { AppNavigator, 
-  // useNavigationPersistence 
+import {
+  AppNavigator,
+  // useNavigationPersistence
 } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 // import * as storage from "./utils/storage"
@@ -94,8 +95,10 @@ function App(props: AppProps) {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (!rehydrated || (!areFontsLoaded && !fontLoadError // || !isNavigationStateRestored 
-  )) {
+  if (
+    !rehydrated ||
+    (!areFontsLoaded && !fontLoadError) // || !isNavigationStateRestored
+  ) {
     return null
   }
 
@@ -109,11 +112,7 @@ function App(props: AppProps) {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <GestureHandlerRootView style={$container}>
-          <AppNavigator
-            linking={linking}
-            initialState={undefined}
-            onStateChange={undefined}
-          />
+          <AppNavigator linking={linking} initialState={undefined} onStateChange={undefined} />
         </GestureHandlerRootView>
       </ErrorBoundary>
     </SafeAreaProvider>

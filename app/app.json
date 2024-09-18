@@ -6,7 +6,7 @@
     "slug": "interpreter-01-app",
     "scheme": "com.interpreter",
     "owner": "open-interpreter",
-    "version": "1.0.0",
+    "version": "1.0.32",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
     "splash": {
@@ -18,12 +18,10 @@
       "fallbackToCacheTimeout": 0
     },
     "jsEngine": "hermes",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.interpreter.app",
-      "versionCode": 0,
+      "versionCode": 32,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app-icon.png",
         "backgroundColor": "#ffffff"
@@ -36,16 +34,16 @@
     },
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "0",
+      "buildNumber": "32",
       "bundleIdentifier": "com.interpreter.app",
       "splash": {
         "image": "./assets/images/splash-logo-all.png",
         "tabletImage": "./assets/images/splash-logo-all.png",
         "resizeMode": "contain",
         "backgroundColor": "#000000"
-      }, 
+      },
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "This app requires microphone access to enable voice chatting with the AI agent. Your privacy is important to us, and microphone access is only used when explicitly initiated by you.", 
+        "NSMicrophoneUsageDescription": "This app requires microphone access to enable voice chatting with the AI agent. Your privacy is important to us, and microphone access is only used when explicitly initiated by you.",
         "NSCameraUsageDescription": "This app requires camera access to scan QR codes for connecting to local servers and for potential future features like image analysis or video calls. Your privacy is important to us, and camera access is only used when explicitly initiated by you."
       }
     },
@@ -76,8 +74,8 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "This app requires camera access to scan QR codes for connecting to local servers and for potential future features like image analysis or video calls. Your privacy is important to us, and camera access is only used when explicitly initiated by you.", 
-          "microphonePermission": "This app requires microphone access to enable voice chatting with the AI agent. Your privacy is important to us, and microphone access is only used when explicitly initiated by you.", 
+          "cameraPermission": "This app requires camera access to scan QR codes for connecting to local servers and for potential future features like image analysis or video calls. Your privacy is important to us, and camera access is only used when explicitly initiated by you.",
+          "microphonePermission": "This app requires microphone access to enable voice chatting with the AI agent. Your privacy is important to us, and microphone access is only used when explicitly initiated by you.",
           "recordAudioAndroid": true
         }
       ],
@@ -85,7 +83,7 @@
         "expo-font",
         {
           "fonts": [
-            "../app/assets/fonts/PP_Editorial_New_Regular.otf", 
+            "../app/assets/fonts/PP_Editorial_New_Regular.otf",
             "../app/assets/fonts/PP_Editorial_New_Ultralight.otf",
             "../app/assets/fonts/PP_Editorial_New_Ultrabold.otf",
             "../app/assets/fonts/Inter-Bold.otf",
@@ -95,6 +93,14 @@
             "../app/assets/fonts/Inter-Regular.otf",
             "../app/assets/fonts/Inter-Medium.otf"
           ]
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "01-app",
+          "organization": "open-interpreter"
         }
       ]
     ],
