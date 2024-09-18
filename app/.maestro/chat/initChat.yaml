@@ -7,21 +7,21 @@ tags:
 - openLink: ${EXPO_SERVER}
 
 - extendedWaitUntil:
-    visible: 
-        id: "tosDisclaimer"
+    visible:
+      id: "tosDisclaimer"
     timeout: 5000
 
 # Verify that all options selected enables the continue button
-- tapOn: 
+- tapOn:
     id: "backupRadio"
-- tapOn: 
+- tapOn:
     id: "safetyRadio"
-- tapOn: 
+- tapOn:
     id: "tosRadio"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: true
-- tapOn: 
+- tapOn:
     id: "tosContinue"
 
 - tapOn: "Your LiveKit URL"
@@ -33,16 +33,16 @@ tags:
 - inputText: ${LIVEKIT_URL.slice(75, 90)}
 - inputText: ${LIVEKIT_URL.slice(90)}
 - pressKey: Enter
-- tapOn: 
+- tapOn:
     id: "loginButton"
 
 - extendedWaitUntil:
-    visible: 
-        id: "audioVisualizer"
+    visible:
+      id: "audioVisualizer"
     timeout: 20000
 
 # enter chat message
-- tapOn: 
+- tapOn:
     point: "56%,94%"
 - inputText: "What can you do?"
 - pressKey: Enter

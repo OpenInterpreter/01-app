@@ -4,10 +4,9 @@ appId: com.interpreter.app
     appId: com.interpreter.app
 - openLink: ${EXPO_SERVER}
 
-
 - extendedWaitUntil:
-    visible: 
-        id: "tosDisclaimer"
+    visible:
+      id: "tosDisclaimer"
     timeout: 5000
 
 - tapOn:

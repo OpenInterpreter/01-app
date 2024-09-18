@@ -5,84 +5,84 @@ appId: com.interpreter.app
 - openLink: ${EXPO_SERVER}
 
 - extendedWaitUntil:
-    visible: 
-        id: "tosDisclaimer"
+    visible:
+      id: "tosDisclaimer"
     timeout: 5000
 
 # Test all permutations of incomplete selections
 # No options selected
 - assertVisible:
     id: "tosBackup"
-- assertVisible: 
+- assertVisible:
     id: "tosSafety"
-- assertVisible: 
+- assertVisible:
     id: "tosAgree"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: false
 
 # Only Backup selected
-- tapOn: 
+- tapOn:
     id: "backupRadio"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: false
-- tapOn: 
+- tapOn:
     id: "backupRadio"
 
 # Only Safety selected
-- tapOn: 
+- tapOn:
     id: "safetyRadio"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: false
-- tapOn: 
+- tapOn:
     id: "safetyRadio"
 
 # Only Agree selected
-- tapOn: 
+- tapOn:
     id: "tosRadio"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: false
-- tapOn: 
+- tapOn:
     id: "tosRadio"
 
 # Backup and Safety selected
-- tapOn: 
+- tapOn:
     id: "backupRadio"
-- tapOn: 
+- tapOn:
     id: "safetyRadio"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: false
-- tapOn: 
+- tapOn:
     id: "backupRadio"
-- tapOn: 
+- tapOn:
     id: "safetyRadio"
 
 # Backup and Agree selected
-- tapOn: 
+- tapOn:
     id: "backupRadio"
-- tapOn: 
+- tapOn:
     id: "tosRadio"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: false
-- tapOn: 
+- tapOn:
     id: "backupRadio"
-- tapOn: 
+- tapOn:
     id: "tosRadio"
 
 # Safety and Agree selected
-- tapOn: 
+- tapOn:
     id: "safetyRadio"
-- tapOn: 
+- tapOn:
     id: "tosRadio"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: false
-- tapOn: 
+- tapOn:
     id: "safetyRadio"
-- tapOn: 
+- tapOn:
     id: "tosRadio"

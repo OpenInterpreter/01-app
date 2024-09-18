@@ -7,21 +7,21 @@ tags:
 - openLink: ${EXPO_SERVER}
 
 - extendedWaitUntil:
-    visible: 
-        id: "tosDisclaimer"
+    visible:
+      id: "tosDisclaimer"
     timeout: 5000
 
 # Verify that all options selected enables the continue button
-- tapOn: 
+- tapOn:
     id: "backupRadio"
-- tapOn: 
+- tapOn:
     id: "safetyRadio"
-- tapOn: 
+- tapOn:
     id: "tosRadio"
-- assertVisible: 
+- assertVisible:
     id: "tosContinue"
     enabled: true
-- tapOn: 
+- tapOn:
     id: "tosContinue"
 
 - assertVisible:
