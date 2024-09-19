@@ -6,7 +6,7 @@
     "slug": "interpreter-01-app",
     "scheme": "com.interpreter",
     "owner": "open-interpreter",
-    "version": "1.0.32",
+    "version": "1.0.33",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
     "splash": {
@@ -21,7 +21,7 @@
     "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.interpreter.app",
-      "versionCode": 32,
+      "versionCode": 33,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app-icon.png",
         "backgroundColor": "#ffffff"
@@ -34,7 +34,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "32",
+      "buildNumber": "33",
       "bundleIdentifier": "com.interpreter.app",
       "splash": {
         "image": "./assets/images/splash-logo-all.png",

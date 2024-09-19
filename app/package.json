@@ -1,6 +1,6 @@
 {
   "name": "interpreter-01-app",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "private": true,
   "main": "expo/AppEntry.js",
   "scripts": {
