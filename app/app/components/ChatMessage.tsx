@@ -2,30 +2,28 @@ import React from "react"
 import { View, ViewStyle, TextStyle } from "react-native"
 import { Text } from "./Text"
 import { typography } from "../theme"
+import { useTheme } from "../utils/useTheme"
 
 type ChatMessageProps = {
   message: string
-  accentColor: string
   isSelf: boolean
   isConsecutive?: boolean
 }
 
 const ChatMessage = ({
   message,
-  accentColor,
   isSelf,
-}: // isConsecutive,
+}: 
 ChatMessageProps) => {
+  const { theme } = useTheme()
+
   return (
     <View
-      style={
-        $container
-        // isConsecutive ? $consecutiveContainer : $nonConsecutiveContainer
-      }
+      style={ $container }
     >
       <Text
         size="sm"
-        style={[$message, $getSelfMessage(isSelf, accentColor), !isSelf && $textShadow]}
+        style={[$message, $getSelfMessage(isSelf, theme.accent), !isSelf && $textShadow]}
       >
         {message}
       </Text>
@@ -37,16 +35,6 @@ const $container: ViewStyle = {
   flexDirection: "column",
   marginBottom: 27 * 1.2,
 }
-
-/** 
-const $consecutiveContainer: ViewStyle = {
-  marginBottom: 4, // Reduced spacing for consecutive messages
-};
-
-const $nonConsecutiveContainer: ViewStyle = {
-  // More spacing for non-consecutive messages
-};
-*/
 
 const $textShadow: TextStyle = {
   textShadowOffset: { width: 1, height: 1 },

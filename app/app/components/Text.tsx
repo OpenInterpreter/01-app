@@ -2,7 +2,7 @@ import i18n from "i18n-js"
 import React from "react"
 import { StyleProp, Text as RNText, TextProps as RNTextProps, TextStyle } from "react-native"
 import { isRTL, translate, TxKeyPath } from "../i18n"
-import { colors, typography } from "../theme"
+import { themes, typography } from "../theme"
 
 type Sizes = keyof typeof $sizeStyles
 type Weights = keyof typeof typography.primary
@@ -90,7 +90,7 @@ const $fontWeightStyles = Object.entries(typography.primary).reduce((acc, [weigh
 const $baseStyle: StyleProp<TextStyle> = [
   $sizeStyles.sm,
   $fontWeightStyles.regular,
-  { color: colors.text },
+  { color: themes.dark.text },
 ]
 
 const $presets = {

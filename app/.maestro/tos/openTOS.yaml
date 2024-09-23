@@ -1,0 +1,17 @@
+appId: com.interpreter.app
+---
+- launchApp:
+    appId: com.interpreter.app
+- openLink: ${EXPO_SERVER}
+
+- extendedWaitUntil:
+    visible:
+      id: "tosDisclaimer"
+    timeout: 5000
+
+- tapOn:
+    id: "tosAgree"
+
+# link opened
+- assertNotVisible:
+    id: "tosDisclaimer"

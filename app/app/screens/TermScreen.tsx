@@ -46,8 +46,8 @@ export const TermScreen: FC<TermScreenProps> = observer(function TermScreen(_pro
     return settingStore.backup && settingStore.safety && settingStore.terms
   }
 
-  const openTermsAndConditions = () => {
-    openLinkInBrowser("https://01.openinterpreter.com/hardware/mobile/privacy")
+  const openTermsOfService = () => {
+    openLinkInBrowser("https://01.openinterpreter.com/legal/terms-of-service")
   }
 
   return (
@@ -61,17 +61,22 @@ export const TermScreen: FC<TermScreenProps> = observer(function TermScreen(_pro
       <View style={$darkOverlay} />
       <ScrollView contentContainerStyle={$contentOverlay}>
         <View style={$topContainer}>
-          <Text tx="termScreen.disclaimer" preset="subheading" style={$topOverlayText} />
+          <Text
+            testID="tosDisclaimer"
+            tx="termScreen.disclaimer"
+            preset="subheading"
+            style={$topOverlayText}
+          />
 
           <View style={$radioGroup}>
             <ListItem
               onPress={() => setBackup(!settingStore.backup)}
               LeftComponent={
                 <>
-                  <View style={$radioItem}>
+                  <View testID="backupRadio" style={$radioItem}>
                     <Toggle variant="radio" value={settingStore.backup} onValueChange={setBackup} />
                   </View>
-                  <Text tx="termScreen.backup" style={$radioText} />
+                  <Text testID="tosBackup" tx="termScreen.backup" style={$radioText} />
                 </>
               }
             />
@@ -79,10 +84,10 @@ export const TermScreen: FC<TermScreenProps> = observer(function TermScreen(_pro
               onPress={() => setSafety(!settingStore.safety)}
               LeftComponent={
                 <>
-                  <View style={$radioItem}>
+                  <View testID="safetyRadio" style={$radioItem}>
                     <Toggle variant="radio" value={settingStore.safety} onValueChange={setSafety} />
                   </View>
-                  <Text tx="termScreen.safety" style={$radioText} />
+                  <Text testID="tosSafety" tx="termScreen.safety" style={$radioText} />
                 </>
               }
             />
@@ -90,15 +95,16 @@ export const TermScreen: FC<TermScreenProps> = observer(function TermScreen(_pro
               onPress={() => setTerms(!settingStore.terms)}
               LeftComponent={
                 <>
-                  <View style={$radioItem}>
+                  <View testID="tosRadio" style={$radioItem}>
                     <Toggle variant="radio" value={settingStore.terms} onValueChange={setTerms} />
                   </View>
-                  <Text style={$textGroup}>
+                  <Text testID="tosAgree" style={$textGroup}>
                     <Text tx="termScreen.agree" style={$radioText} />
                     <Text
+                      testID="tosTOSLink"
                       tx="termScreen.tos"
                       style={[$radioText, $linkText]}
-                      onPress={openTermsAndConditions}
+                      onPress={openTermsOfService}
                     />
                     <Text text="." style={$radioText} />
                   </Text>
@@ -108,6 +114,7 @@ export const TermScreen: FC<TermScreenProps> = observer(function TermScreen(_pro
           </View>
 
           <Button
+            testID="tosContinue"
             disabled={!isAllChecked()}
             onPress={handleContinue}
             style={[$continueButton, $continueButtonBorder(!isAllChecked())]}
@@ -115,6 +122,7 @@ export const TermScreen: FC<TermScreenProps> = observer(function TermScreen(_pro
             tx="common.continue"
           />
           <Text
+            testID="tosSafetyLink"
             tx="termScreen.safetyReport"
             style={$safetyReportText}
             onPress={() => openLinkInBrowser("https://01.openinterpreter.com/safety/introduction")}

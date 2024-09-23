@@ -9,23 +9,20 @@ import {
 import { LocalParticipant, Participant, Track, TranscriptionSegment } from "livekit-client"
 import { Dimensions, View, ViewStyle } from "react-native"
 import { LinearGradient } from "expo-linear-gradient"
+import { useTheme } from "../utils/useTheme"
 
 export function TranscriptionTile({
   agentAudioTrack,
-  accentColor,
   transcripts,
   setTranscripts,
   messages,
   setMessages,
-  isDarkMode,
 }: {
   agentAudioTrack: TrackReferenceOrPlaceholder
-  accentColor: string
   transcripts: Map<string, ChatMessageType>
   setTranscripts: React.Dispatch<React.SetStateAction<Map<string, ChatMessageType>>>
   messages: ChatMessageType[]
   setMessages: React.Dispatch<React.SetStateAction<ChatMessageType[]>>
-  isDarkMode: boolean
 }) {
   const agentMessages = useTrackTranscription(agentAudioTrack)
   const localParticipant = useLocalParticipant()
@@ -34,7 +31,7 @@ export function TranscriptionTile({
     source: Track.Source.Microphone,
     participant: localParticipant.localParticipant,
   })
-
+  const { isDarkMode } = useTheme()
   const { chatMessages } = useChat()
 
   const updateTranscripts = useCallback(
@@ -101,7 +98,7 @@ export function TranscriptionTile({
         }
         style={$gradientTop}
       />
-      <ChatTile messages={messages} accentColor={accentColor} />
+      <ChatTile messages={messages} />
       <LinearGradient
         colors={
           isDarkMode

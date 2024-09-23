@@ -2,30 +2,32 @@
  * If you're using Sentry
  *   Expo https://docs.expo.dev/guides/using-sentry/
  */
-// import * as Sentry from "@sentry/react-native"
-
-/**
- * If you're using Crashlytics: https://rnfirebase.io/crashlytics/usage
- */
-// import crashlytics from "@react-native-firebase/crashlytics"
-
-/**
- * If you're using Bugsnag:
- *   RN   https://docs.bugsnag.com/platforms/react-native/)
- *   Expo https://docs.bugsnag.com/platforms/react-native/expo/
- */
-// import Bugsnag from "@bugsnag/react-native"
-// import Bugsnag from "@bugsnag/expo"
+import * as Sentry from "@sentry/react-native"
 
 /**
  *  This is where you put your crash reporting service initialization code to call in `./app/app.tsx`
  */
 export const initCrashReporting = () => {
-  // Sentry.init({
-  //   dsn: "YOUR DSN HERE",
-  //   debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
-  // })
-  // Bugsnag.start("YOUR API KEY")
+  Sentry.init({
+    dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+    // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+    // We recommend adjusting this value in production.
+    tracesSampleRate: 1.0,
+    _experiments: {
+      replaysSessionSampleRate: 1.0,
+      replaysOnErrorSampleRate: 1.0,
+      // profilesSampleRate is relative to tracesSampleRate.
+      // Here, we'll capture profiles for 100% of transactions.
+      profilesSampleRate: 1.0,
+    },
+    integrations: [
+      Sentry.mobileReplayIntegration({
+        maskAllImages: true,
+        maskAllVectors: true,
+      }),
+    ],
+    debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+  })
 }
 
 /**
@@ -54,9 +56,6 @@ export const reportCrash = (error: Error, type: ErrorType = ErrorType.FATAL) => 
     console.log(message, type)
   } else {
     // In production, utilize crash reporting service of choice below:
-    // RN
-    // Sentry.captureException(error)
-    // crashlytics().recordError(error)
-    // Bugsnag.notify(error)
+    Sentry.captureException(error)
   }
 }

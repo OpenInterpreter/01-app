@@ -1,0 +1,50 @@
+appId: com.interpreter.app
+tags:
+  - prod-build
+---
+- launchApp:
+    appId: com.interpreter.app
+- openLink: ${EXPO_SERVER}
+
+- extendedWaitUntil:
+    visible:
+      id: "tosDisclaimer"
+    timeout: 5000
+
+# Verify that all options selected enables the continue button
+- tapOn:
+    id: "backupRadio"
+- tapOn:
+    id: "safetyRadio"
+- tapOn:
+    id: "tosRadio"
+- assertVisible:
+    id: "tosContinue"
+    enabled: true
+- tapOn:
+    id: "tosContinue"
+
+- tapOn: "Your LiveKit URL"
+- inputText: ${LIVEKIT_URL.slice(0, 15)}
+- inputText: ${LIVEKIT_URL.slice(15, 30)}
+- inputText: ${LIVEKIT_URL.slice(30, 45)}
+- inputText: ${LIVEKIT_URL.slice(45, 60)}
+- inputText: ${LIVEKIT_URL.slice(60, 75)}
+- inputText: ${LIVEKIT_URL.slice(75, 90)}
+- inputText: ${LIVEKIT_URL.slice(90)}
+- pressKey: Enter
+- tapOn:
+    id: "loginButton"
+
+- extendedWaitUntil:
+    visible:
+      id: "audioVisualizer"
+    timeout: 20000
+
+# enter chat message
+- tapOn:
+    point: "56%,94%"
+- inputText: "What can you do?"
+- pressKey: Enter
+
+- assertVisible: "What can you do?"

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useCallback, useRef, useMemo } from "react"
+import React, { FC, useEffect, useState, useCallback, useRef } from "react"
 import {
   ViewStyle,
   View,
@@ -6,23 +6,16 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  Alert,
 } from "react-native"
 import { Screen, Icon } from "../components"
 import { ScreenStackScreenProps } from "../navigators/ScreenNavigator"
 import { spacing } from "../theme"
 import { TranscriptionTile } from "app/components/Transcript"
 import { ChatMessageInput } from "../components/ChatMessageInput"
-import {
-  TrackReferenceOrPlaceholder,
-  useTracks,
-  useLocalParticipant,
-  useConnectionState,
-} from "@livekit/react-native"
-import { Track, ConnectionState, RemoteTrack, LocalTrack } from "livekit-client"
-import { useDataChannel, useChat } from "@livekit/components-react"
+import { useLocalParticipant, useConnectionState } from "@livekit/react-native"
+import { ConnectionState } from "livekit-client"
+import { useChat } from "@livekit/components-react"
 import { useStores } from "../models"
-import { useAudioActivity } from "../utils/useVolume"
 import { AudioVisualizer } from "../components/AudioVisualizer"
 import { ChatMessageType } from "../components/Chat"
 import { observer } from "mobx-react-lite"
@@ -30,23 +23,16 @@ import { toJS } from "mobx"
 import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated"
 import { WelcomeScreenWrapper } from "./WelcomeScreen"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-
-const isSpecialMessage = (message: string): boolean => {
-  const specialMessages = [
-    "{START}",
-    "{CONTEXT_MODE_ON}",
-    "{CONTEXT_MODE_OFF}",
-    "{REQUIRE_START_ON}",
-    "{REQUIRE_START_OFF}",
-  ]
-  return specialMessages.includes(message.trim())
-}
+import { useAudioSetup } from "../utils/useAudioSetup"
+import { useTranscriptionHook } from "../utils/useTranscription"
+import { useTheme } from "../utils/useTheme" // Import the useTheme hook
 
 export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function HeroScreen(_props) {
   const isRevealed = useRef(false)
   const { navigation } = _props
 
-  const tracks = useTracks()
+  const { isDarkMode } = useTheme()
+
   const { localParticipant } = useLocalParticipant()
   const roomState = useConnectionState()
   const { settingStore } = useStores()
@@ -55,68 +41,25 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
   const [messages, setMessages] = useState<ChatMessageType[]>([])
   const [transcripts, setTranscripts] = useState<Map<string, ChatMessageType>>(new Map())
 
-  const [isDarkMode, setIsDarkMode] = useState(true)
   const isWearable = toJS(settingStore.wearable)
   const insets = useSafeAreaInsets()
   const [_, setKeyboardVisible] = useState(false)
   const chatFlexValue = useSharedValue(7)
-  const [audioTrackReady, setAudioTrackReady] = useState(false)
-  const audioTrackRef = useRef<LocalTrack | undefined>(undefined)
-  let agentAudioTrack: TrackReferenceOrPlaceholder | undefined
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode)
-  }
+  const { audioTrackReady, agentAudioTrack, unmute, mute } = useAudioSetup(
+    localParticipant,
+    roomState,
+    settingStore,
+    navigation,
+  )
+
+  const { filteredMessages, filteredTranscripts } = useTranscriptionHook(messages, transcripts)
 
   useEffect(() => {
     if (roomState === ConnectionState.Disconnected || roomState === ConnectionState.Reconnecting) {
       console.log("Connection Lost", "You have been disconnected from the room")
     }
   }, [roomState])
-
-  useEffect(() => {
-    if (roomState === ConnectionState.Connected && localParticipant) {
-      const setupMicrophone = async () => {
-        await localParticipant.setMicrophoneEnabled(true)
-        let attempts = 0
-        const maxAttempts = 10
-
-        while (!audioTrackRef.current && attempts < maxAttempts) {
-          audioTrackRef.current = localParticipant.getTrackPublication(
-            Track.Source.Microphone,
-          )?.track
-          if (!audioTrackRef.current) {
-            await new Promise((resolve) => setTimeout(resolve, 500))
-            attempts++
-          }
-        }
-
-        if (audioTrackRef.current) {
-          console.log("Microphone found after", attempts, "attempts")
-          console.log("Setting up microphone:", {
-            pushToTalk: settingStore.pushToTalk,
-            alwaysListening: settingStore.alwaysListening,
-          })
-          if (settingStore.pushToTalk && !settingStore.alwaysListening) {
-            console.log("Muting microphone")
-            await audioTrackRef.current.mute()
-          } else {
-            console.log("Unmuting microphone")
-            await audioTrackRef.current.unmute()
-          }
-          console.log("Microphone muted state:", audioTrackRef.current.isMuted)
-          setAudioTrackReady(true)
-        } else {
-          Alert.alert(`Microphone  track not found after ${maxAttempts} attempts`)
-          navigation.navigate("Login")
-        }
-      }
-
-      ;(async () => {
-        await setupMicrophone()
-      })()
-    }
-  }, [localParticipant, roomState, settingStore.pushToTalk, settingStore.alwaysListening])
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
@@ -133,91 +76,6 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
       keyboardDidHideListener.remove()
     }
   }, [])
-
-  const aat = tracks.find(
-    (trackRef) => trackRef.publication.kind === Track.Kind.Audio && trackRef.participant.isAgent,
-  )
-
-  if (aat) {
-    agentAudioTrack = aat
-  }
-
-  const subscribedVolumes = useAudioActivity(agentAudioTrack?.publication?.track)
-
-  const currentVolume =
-    (subscribedVolumes.reduce((sum, value) => sum + value, 0) / subscribedVolumes.length) * 50
-
-  const unmute = () => {
-    if (localParticipant && settingStore.pushToTalk && !settingStore.alwaysListening) {
-      if (audioTrackRef.current) {
-        audioTrackRef.current.unmute()
-      }
-    }
-
-    // Mute the agent track
-    if (agentAudioTrack?.publication?.track) {
-      ;(agentAudioTrack.publication.track as RemoteTrack).setMuted(true)
-    }
-
-    toggleTheme()
-  }
-
-  const mute = () => {
-    if (localParticipant && settingStore.pushToTalk && !settingStore.alwaysListening) {
-      if (audioTrackRef.current) {
-        audioTrackRef.current.mute()
-      }
-    }
-
-    // Unmute the agent track
-    if (agentAudioTrack?.publication?.track) {
-      ;(agentAudioTrack.publication.track as RemoteTrack).setMuted(false)
-    }
-
-    if (settingStore.pushToTalk) {
-      sendChat("{START}")
-    }
-
-    toggleTheme()
-  }
-
-  const onDataReceived = useCallback((msg: any) => {
-    if (msg.topic === "transcription") {
-      console.log("message received", msg)
-      const decoded = JSON.parse(new TextDecoder("utf-8").decode(msg.payload))
-      let timestamp = new Date().getTime()
-      if ("timestamp" in decoded && decoded.timestamp > 0) {
-        timestamp = decoded.timestamp
-      }
-      setTranscripts((prevTranscripts) => {
-        const newTranscripts = new Map(prevTranscripts)
-        const id = `local-${timestamp}` // Create a unique ID for this transcript
-        newTranscripts.set(id, {
-          name: "You",
-          message: decoded.text,
-          timestamp,
-          isSelf: true,
-        })
-        return newTranscripts
-      })
-    }
-  }, [])
-
-  useDataChannel(onDataReceived)
-
-  const filteredMessages = useMemo(() => {
-    return messages.filter((message) => !isSpecialMessage(message.message))
-  }, [messages])
-
-  const filteredTranscripts = useMemo(() => {
-    const newTranscripts = new Map(transcripts)
-    for (const [id, transcript] of newTranscripts) {
-      if (isSpecialMessage(transcript.message)) {
-        newTranscripts.delete(id)
-      }
-    }
-    return newTranscripts
-  }, [transcripts])
 
   const chatAnimatedStyle = useAnimatedStyle(() => ({
     flex: isWearable ? 0 : chatFlexValue.value,
@@ -252,19 +110,18 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
               contentContainerStyle={$topContainer(isDarkMode)}
             >
               <TranscriptionTile
-                agentAudioTrack={agentAudioTrack}
-                accentColor={isDarkMode ? "white" : "black"}
+                agentAudioTrack={agentAudioTrack}      
                 transcripts={filteredTranscripts}
                 setTranscripts={setTranscripts}
                 messages={filteredMessages}
                 setMessages={setMessages}
-                isDarkMode={isDarkMode}
               />
             </Screen>
           </Animated.View>
 
           <Animated.View style={[$animatedContainer, visualizerAnimatedStyle]}>
             <TouchableOpacity
+              testID="audioVisualizer"
               style={$fullSize}
               onPressIn={settingStore.pushToTalk ? unmute : undefined}
               onPressOut={settingStore.pushToTalk ? mute : undefined}
@@ -279,7 +136,7 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
                 ]}
                 safeAreaEdges={isRevealed.current ? ["top"] : []}
               >
-                <AudioVisualizer currentVolume={currentVolume} darkMode={isDarkMode} />
+                <AudioVisualizer />
               </Screen>
             </TouchableOpacity>
           </Animated.View>
@@ -298,7 +155,7 @@ export const HeroScreen: FC<ScreenStackScreenProps<"Hero">> = observer(function 
             </Screen>
           </Animated.View>
 
-          <View style={$settingContainer}>
+          <View testID="settingsIcon" style={$settingContainer}>
             <Icon
               icon="cog"
               size={36}
