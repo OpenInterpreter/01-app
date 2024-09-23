@@ -1,0 +1,7 @@
+flows:
+  - "tos/*"
+  - "login/*"
+  - "chat/*"
+  - "settings/*"
+excludeTags:
+  - prod-build

@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from "react-native"
 import { isRTL, translate } from "../i18n"
-import { colors, spacing, typography } from "../theme"
+import { themes, spacing, typography } from "../theme"
 import { Text, TextProps } from "./Text"
 
 export interface TextFieldAccessoryProps {
@@ -134,11 +134,11 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
 
   const $containerStyles = [$containerStyleOverride]
 
-  const $labelStyles = [$labelStyle, { color: colors.text }, LabelTextProps?.style]
+  const $labelStyles = [$labelStyle, { color: themes.dark.text }, LabelTextProps?.style]
 
   const $inputWrapperStyles = [
     $inputWrapperStyle,
-    status === "error" && { borderColor: colors.error },
+    status === "error" && { borderColor: themes.dark.error },
     TextInputProps.multiline && { minHeight: 112 },
     LeftAccessory && { paddingStart: 0 },
     RightAccessory && { paddingEnd: 0 },
@@ -147,7 +147,7 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
 
   const $inputStyles: StyleProp<TextStyle> = [
     $inputStyle,
-    disabled && { color: colors.textDim },
+    disabled && { color: themes.dark.textDim },
     isRTL && { textAlign: "right" as TextStyle["textAlign"] },
     TextInputProps.multiline && { height: "auto" },
     $inputStyleOverride,
@@ -155,7 +155,7 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
 
   const $helperStyles = [
     $helperStyle,
-    status === "error" && { color: colors.error },
+    status === "error" && { color: themes.dark.error },
     HelperTextProps?.style,
   ]
 
@@ -200,10 +200,10 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
 
         <TextInput
           ref={input}
-          underlineColorAndroid={colors.transparent}
+          underlineColorAndroid={themes.dark.transparent}
           textAlignVertical="top"
           placeholder={placeholderContent}
-          placeholderTextColor={colors.textDim}
+          placeholderTextColor={themes.dark.textDim}
           {...TextInputProps}
           editable={!disabled}
           style={$inputStyles}
@@ -235,7 +235,7 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
 
 const $labelStyle: TextStyle = {
   marginBottom: spacing.xs,
-  color: colors.text,
+  color: themes.dark.text,
 }
 
 const $inputWrapperStyle: ViewStyle = {
@@ -243,8 +243,8 @@ const $inputWrapperStyle: ViewStyle = {
   alignItems: "center",
   borderWidth: 1,
   borderRadius: 4,
-  backgroundColor: colors.palette.neutral200,
-  borderColor: colors.palette.neutral400,
+  backgroundColor: themes.dark.palette.neutral200,
+  borderColor: themes.dark.palette.neutral400,
   overflow: "hidden",
 }
 
@@ -252,7 +252,7 @@ const $inputStyle: TextStyle = {
   flex: 1,
   alignSelf: "center",
   fontFamily: typography.primary.regular,
-  color: colors.text,
+  color: themes.dark.text,
   fontSize: 16,
   height: 24,
   // https://github.com/facebook/react-native/issues/21720#issuecomment-532642093

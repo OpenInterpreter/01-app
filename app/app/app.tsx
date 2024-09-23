@@ -23,9 +23,12 @@ import React from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import * as Linking from "expo-linking"
 import { useInitialRootStore } from "./models"
-import { AppNavigator, useNavigationPersistence } from "./navigators"
+import {
+  AppNavigator,
+  // useNavigationPersistence
+} from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
-import * as storage from "./utils/storage"
+// import * as storage from "./utils/storage"
 import { customFontsToLoad } from "./theme"
 import Config from "./config"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
@@ -33,6 +36,7 @@ import { ViewStyle } from "react-native"
 import { registerGlobals } from "@livekit/react-native"
 import "./utils/cryptoPolyfill"
 import { initCrashReporting } from "./utils/crashReporting"
+import * as Sentry from "@sentry/react-native"
 
 initCrashReporting()
 registerGlobals()
@@ -53,23 +57,23 @@ const config = {
   },
 }
 
-interface AppProps {
-  hideSplashScreen: () => Promise<boolean>
-}
 
 /**
  * This is the root component of our app.
- * @param {AppProps} props - The props for the `App` component.
+ * @param props - The props for the `App` component.
  * @returns {JSX.Element} The rendered `App` component.
  */
-function App(props: AppProps) {
-  const { hideSplashScreen } = props
+function App(props: Record<string, any>) {
+  const hideSplashScreen = props.hideSplashScreen as () => Promise<boolean>
 
-  const {
+  /**
+   * DO NOT CACHE THE LAST SCREEN
+  const { 
     initialNavigationState,
     onNavigationStateChange,
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY)
+  */
 
   const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad)
 
@@ -89,7 +93,10 @@ function App(props: AppProps) {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (!rehydrated || !isNavigationStateRestored || (!areFontsLoaded && !fontLoadError)) {
+  if (
+    !rehydrated ||
+    (!areFontsLoaded && !fontLoadError) // || !isNavigationStateRestored
+  ) {
     return null
   }
 
@@ -103,18 +110,15 @@ function App(props: AppProps) {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <GestureHandlerRootView style={$container}>
-          <AppNavigator
-            linking={linking}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
-          />
+          <AppNavigator linking={linking} initialState={undefined} onStateChange={undefined} />
         </GestureHandlerRootView>
       </ErrorBoundary>
     </SafeAreaProvider>
   )
 }
 
-export default App
+const ExportedApp = __DEV__ ? App : Sentry.wrap(App)
+export default ExportedApp
 
 const $container: ViewStyle = {
   flex: 1,

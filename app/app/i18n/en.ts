@@ -16,12 +16,13 @@ const en = {
     backup: "I have backed up all my files",
     safety: "I understand the safety implications of running AI generated code on my computer.",
     agree: "I have read and agree to the 01 App ",
-    tos: "terms and conditions",
+    tos: "terms of service",
     safetyReport: "Read Safety Report",
   },
 
   loginScreen: {
     setup: "Setup Guide",
+    report: "Report Bugs",
   },
 
   welcomeScreen: {
